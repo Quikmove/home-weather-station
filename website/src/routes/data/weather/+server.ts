@@ -35,7 +35,7 @@ export async function GET() {
         .from("HomeData")
         .select("temperature, humidity, created_at")
         .order("created_at", { ascending: false })
-        .limit(3);
+        .limit(1);
     // if (!data) {
     //     return json("No data found", { status: 404 });
     // }
