@@ -10,9 +10,9 @@ type WeatherData = {
 export async function POST({ request }: { request: Request }) {
     const data = await request.json();
     const secretHeader = request.headers.get("x-secret-header");
-    if (secretHeader !== "gicji6-wovcAp-nunbad") {
-        return json("Unauthorized", { status: 401 });
-    }
+    // if (secretHeader !== "gicji6-wovcAp-nunbad") {
+    //     return json("Unauthorized", { status: 401 });
+    // }
     const { temperature, humidity } = data;
     if (
         typeof temperature !== "number" ||
