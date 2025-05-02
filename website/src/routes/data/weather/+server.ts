@@ -30,15 +30,13 @@ export async function POST({ request }: { request: Request }) {
     else return json(res.data, { status: 201 });
 }
 export async function GET() {
-    // select 3 most recent records
-    const { data } = await supabase
-        .from("HomeData")
-        .select("temperature, humidity, created_at")
-        .order("created_at", { ascending: false })
-        .limit(1);
-    // if (!data) {
-    //     return json("No data found", { status: 404 });
-    // }
+    // select recent record
+    const { data, error } = await supabase.functions.invoke('get-last-query', {
+       method: 'GET',
+      })
+    if (error) {
+        return json({error: error.message}, { status: 404 });
+    }
     return json(data, {
         status: 200,
         headers: { "Content-Type": "application/json" },
