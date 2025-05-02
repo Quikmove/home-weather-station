@@ -1,4 +1,4 @@
-import { SECRET_VALUE, SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY } from "$env/static/private";
+import { SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY } from "$env/static/private";
 import { supabase } from "$lib/supabaseClient";
 import { createClient } from "@supabase/supabase-js";
 
