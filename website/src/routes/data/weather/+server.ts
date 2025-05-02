@@ -1,4 +1,4 @@
-import { SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY } from "$env/static/private";
+import { DATABASE_URL, SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY } from "$env/static/private";
 import { supabase } from "$lib/supabaseClient";
 import { createClient } from "@supabase/supabase-js";
 
@@ -9,7 +9,7 @@ type WeatherData = {
     humidity: number;
 };
 export async function POST({ request }: { request: Request }) {
-    const privateSupabase = createClient(SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY);
+    const privateSupabase = createClient(DATABASE_URL, SUPABASE_SERVER_ROLE_KEY);
     const data = await request.json();
     const { temperature, humidity } = data;
     if (
