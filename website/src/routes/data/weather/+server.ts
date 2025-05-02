@@ -1,5 +1,6 @@
-import { SECRET_VALUE } from "$env/static/private";
+import { SECRET_VALUE, SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY } from "$env/static/private";
 import { supabase } from "$lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 import { json } from "@sveltejs/kit";
 
@@ -8,8 +9,8 @@ type WeatherData = {
     humidity: number;
 };
 export async function POST({ request }: { request: Request }) {
+    const privateSupabase = createClient(SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY);
     const data = await request.json();
-    const secretHeader = request.headers.get("x-secret-header");
     // if (secretHeader !== "gicji6-wovcAp-nunbad") {
     //     return json("Unauthorized", { status: 401 });
     // }
@@ -20,7 +21,7 @@ export async function POST({ request }: { request: Request }) {
     ) {
         return  json("Invalid data", { status: 400 });
     }
-    const res = await supabase.from("HomeData").insert(
+    const res = await privateSupabase.from("HomeData").insert(
         {
             temperature: temperature,
             humidity: humidity,
