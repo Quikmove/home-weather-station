@@ -11,9 +11,6 @@ type WeatherData = {
 export async function POST({ request }: { request: Request }) {
     const privateSupabase = createClient(SUPABASE_ACCESS_TOKEN, SUPABASE_SERVER_ROLE_KEY);
     const data = await request.json();
-    // if (secretHeader !== "gicji6-wovcAp-nunbad") {
-    //     return json("Unauthorized", { status: 401 });
-    // }
     const { temperature, humidity } = data;
     if (
         typeof temperature !== "number" ||
@@ -31,7 +28,6 @@ export async function POST({ request }: { request: Request }) {
     else return json(res.data, { status: 201 });
 }
 export async function GET() {
-    // select recent record
     const { data, error } = await supabase.functions.invoke('get-last-query', {
        body: { name: 'Functions'}
       })
