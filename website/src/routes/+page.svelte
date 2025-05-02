@@ -2,7 +2,6 @@
 import * as Card from "$lib/components/ui/card/";
 export let data;
 console.log(data);
-data.homeData.created_at = new Date(data.homeData.created_at).toLocaleString();
 
 </script>
 <div class="card-container">
@@ -16,7 +15,7 @@ data.homeData.created_at = new Date(data.homeData.created_at).toLocaleString();
                 <p>{data.homeData.humidity}%</p>
             </Card.Content>
             <Card.Footer>
-                <p>Logged at: {data.homeData.created_at}</p>
+                <p>Logged at: {new Date(data.homeData.created_at).toLocaleString()}</p>
             </Card.Footer>
         </Card.Root>
     </div>

@@ -6,49 +6,10 @@
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 using std::string;
-#define DEBUG 1
 
 /*          SERVER DETAILS                     */
 const char SECRET_VAlUE[]= "gicji6-wovcAp-nunbad";
-#define POST_URL "https://incredible-dieffenbachia-39a8f0.netlify.app/data/weather"
-
-const char* rootCACertficate = 
-"-----BEGIN CERTIFICATE-----\n"
-"MIIGFzCCBP+gAwIBAgIQBOh2HDFLUZ516TWBqEo4OjANBgkqhkiG9w0BAQsFADBZ\n"
-"MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMTMwMQYDVQQDEypE\n"
-"aWdpQ2VydCBHbG9iYWwgRzIgVExTIFJTQSBTSEEyNTYgMjAyMCBDQTEwHhcNMjUw\n"
-"MTMxMDAwMDAwWhcNMjYwMzAzMjM1OTU5WjBpMQswCQYDVQQGEwJVUzETMBEGA1UE\n"
-"CBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEVMBMGA1UEChMM\n"
-"TmV0bGlmeSwgSW5jMRYwFAYDVQQDDA0qLm5ldGxpZnkuYXBwMFkwEwYHKoZIzj0C\n"
-"AQYIKoZIzj0DAQcDQgAEZMOrg6Gfm/f/5QC/Qa7N0c0cXY1NYvsO5JAzEy21RZHm\n"
-"eiagXgGuJYT71YgjfhN+qdOl3mktkWnDEoZalAJCKKOCA5QwggOQMB8GA1UdIwQY\n"
-"MBaAFHSFgMBmx9833s+9KTeqAx2+7c0XMB0GA1UdDgQWBBQ+ar5uJawSEKu+8eun\n"
-"qbxtiH1UjzAlBgNVHREEHjAcgg0qLm5ldGxpZnkuYXBwggtuZXRsaWZ5LmFwcDA+\n"
-"BgNVHSAENzA1MDMGBmeBDAECAjApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRp\n"
-"Z2ljZXJ0LmNvbS9DUFMwDgYDVR0PAQH/BAQDAgOIMB0GA1UdJQQWMBQGCCsGAQUF\n"
-"BwMBBggrBgEFBQcDAjCBnwYDVR0fBIGXMIGUMEigRqBEhkJodHRwOi8vY3JsMy5k\n"
-"aWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxHMlRMU1JTQVNIQTI1NjIwMjBDQTEt\n"
-"MS5jcmwwSKBGoESGQmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEds\n"
-"b2JhbEcyVExTUlNBU0hBMjU2MjAyMENBMS0xLmNybDCBhwYIKwYBBQUHAQEEezB5\n"
-"MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wUQYIKwYBBQUH\n"
-"MAKGRWh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcy\n"
-"VExTUlNBU0hBMjU2MjAyMENBMS0xLmNydDAMBgNVHRMBAf8EAjAAMIIBfAYKKwYB\n"
-"BAHWeQIEAgSCAWwEggFoAWYAdQAOV5S8866pPjMbLJkHs/eQ35vCPXEyJd0hqSWs\n"
-"YcVOIQAAAZS9P0aOAAAEAwBGMEQCIE6XmOq9I/7snWnAd1U1UXoUB0lwj8rqqVzD\n"
-"si3HTQlyAiBiuAWoupSgK3hMUl8q+NH6aLwOqXcOVLtgInYskFZopgB2AGQRxGyk\n"
-"EuyniRyiAi4AvKtPKAfUHjUnq+r+1QPJfc3wAAABlL0/RqsAAAQDAEcwRQIhAMvL\n"
-"IrY59EOxwrPHEj/aF9WviahUu1N+G5Cwf59ModrKAiAuy8LtsO7fmVzCaGEbPIvd\n"
-"vizhTQG6bxw+tlfJge9OQwB1AEmcm2neHXzs/DbezYdkprhbrwqHgBnRVVL76esp\n"
-"3fjDAAABlL0/RsIAAAQDAEYwRAIgJnNNG4SqCnyuTVl8guVho8u/FmH+GDN28mTL\n"
-"od5um3gCIBD98cv5CDQ6ckmcWTrl//sOttzec9EuX5s3lp3KubbUMA0GCSqGSIb3\n"
-"DQEBCwUAA4IBAQAfKrVCjtNdOobCHm+TqJ+v+IDjMccHae6fWB5xygVuSmbWsPMD\n"
-"euU/d6KIDrsg07ZPucQOC4JO5sh8IGV1hpkb4MigbQ/6HYda732hONEjZIo5elZj\n"
-"Imam8PoI/mrk15YVY92sT0ZcQZ63bqzMIV47EDJFGIM1T/SpLEFB2mkclCViU3YI\n"
-"FSSzCNkqXL0lyrSluJhiFYiLJGez2lYblMlXmvw1USfCNdK5oBcpSbfsgeipN8EO\n"
-"3d0zJN8ANhG02ivcPj+ENu3qx5ayECtfOiRC0qca3Y/Scn8jwH+mpTqd8yi8Yba9\n"
-"HnxRhDswDplOYc86CBbWJz8P76RddXIRyoWN\n"
-"-----END CERTIFICATE-----\n";
-
+#define POST_URL "https://incredible-dieffenbachia-39a8f0.netlify.app/data/weather" // Root CA certificate for server verification
 /*        TIME SYNC        */
 const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 3 * 60 * 60; // GMT+3
@@ -198,6 +159,17 @@ bool readSensorData(float &temp, float &humidity) {
 bool sendDataToServer(const string& jsonData) {
     Serial.println("--- Preparing HTTPS Request ---");
 
+    // Add WiFi status check right before attempting HTTPS
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("WiFi disconnected before sending data! Attempting reconnect...");
+        initWiFi(); // Try to reconnect
+        if (WiFi.status() != WL_CONNECTED) {
+            Serial.println("Reconnect failed. Cannot send data.");
+            return false; // Exit if reconnect fails
+        }
+        Serial.println("Reconnected to WiFi.");
+    }
+
     // Check current time before attempting HTTPS
     struct tm timeinfo;
     if(getLocalTime(&timeinfo)){
@@ -217,16 +189,7 @@ bool sendDataToServer(const string& jsonData) {
     // Use WiFiClientSecure for HTTPS
     WiFiClientSecure client;
 
-    // --- TEMPORARY DEBUGGING (Optional - Try if time/memory checks don't reveal issue) ---
-    // Uncomment the next line INSTEAD of setCACert to skip server verification.
-    // WARNING: Insecure, for debugging only! Remove/comment out for production.
-    // client.setInsecure();
-    // Serial.println("WARNING: Using setInsecure() - Certificate validation disabled!");
-    // --- END TEMPORARY DEBUGGING ---
-
-    // Set the Root CA certificate (Comment this out if using setInsecure)
-    client.setCACert(rootCACertficate);
-
+    client.setInsecure();
 
     HTTPClient http;
     bool success = false;
@@ -237,9 +200,7 @@ bool sendDataToServer(const string& jsonData) {
     // Pass the secure client to http.begin
     if (http.begin(client, POST_URL)) { // Use secure client
         http.addHeader("Content-Type", "application/json");
-        http.addHeader("x-secret-header", SECRET_VAlUE);
-
-        Serial.print("Free Heap before POST: "); // Check memory right before sending
+                Serial.print("Free Heap before POST: "); // Check memory right before sending
         Serial.println(ESP.getFreeHeap());
 
         int httpResponseCode = http.POST(jsonData.c_str());
@@ -259,7 +220,7 @@ bool sendDataToServer(const string& jsonData) {
         }
         http.end();
     } else {
-        Serial.println("HTTPClient secure begin failed.");
+        Serial.println("HTTPClient secure begin failed. Check DNS and WiFi connection."); // Added hint
     }
 
     Serial.print("Free Heap after HTTPS attempt: ");
@@ -302,6 +263,6 @@ void initWiFi()
 string jsonify(float temp, float humidity)
 {
   char buffer[100];
-  snprintf(buffer, sizeof(buffer), "{ \"temp\": %.2f, \"humidity\": %.2f }", temp, humidity);
+  snprintf(buffer, sizeof(buffer), "{ \"temperature\": %.2f, \"humidity\": %.2f }", temp, humidity);
   return string(buffer);
 }
