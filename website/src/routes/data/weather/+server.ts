@@ -32,7 +32,7 @@ export async function POST({ request }: { request: Request }) {
 export async function GET() {
     // select recent record
     const { data, error } = await supabase.functions.invoke('get-last-query', {
-       method: 'GET',
+       body: { name: 'Functions'}
       })
     if (error) {
         return json({error: error.message}, { status: 404 });
