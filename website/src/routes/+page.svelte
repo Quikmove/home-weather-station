@@ -1,7 +1,6 @@
 <script lang="ts">
 import * as Card from "$lib/components/ui/card/";
 export let data;
-console.log(data);
 
 </script>
 <div class="card-container">
