@@ -5,7 +5,7 @@ export let data;
 </script>
 <div class="card-container">
     <Card.Root>
-            <Card.Content class="p-4">
+            <Card.Content>
                 <h2>Temperature</h2>
                 <p>{data.homeData.temperature}°C</p>
             </Card.Content>
