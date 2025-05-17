@@ -5,6 +5,5 @@
 * ESP32 board;
 * DHT-12 temperature sensor;
 * Some wires.
-
+* Supabase account
 # Setup
-
